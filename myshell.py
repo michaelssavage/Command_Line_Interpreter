@@ -6,9 +6,11 @@ import sys
 import subprocess
 
 def main(args):
-   # constantly looking for input
-   # length more than one will be assumed to be a batchfile.
-   # clears the screen, and prints out a welcome message.
+   # The main function works on the input. 
+   # The function determines if a batchfile is in the command line or not.
+   # If not, the function prepares to take in input.
+   # /myshell is appended to the "shell" environment.
+   # The screen is cleared and a welcome message is displayed.
    if len(args) > 1:
        myshell(args[1])
    os.environ["SHELL"] = str(os.getcwd()) + "/myshell"
@@ -79,7 +81,6 @@ def execute(args):
            quit()
        else:
            childprocess(args)
-
    except EOFError as e:
        print("Error while trying to execute" + args)
 
@@ -96,16 +97,21 @@ def childprocess(args):
 
 def redirect(command, filename):
    # main overwrite that will deal with dir, environ, echo & help
+   # the redirect will have parameters for the sign ( > or >> )
+   # and parameter for the filename.
    try:
        if "dir" == command[0]:
            # redirect(command, sign, filename)
            redirect_dir("".join(command[1:-1]),command[-1],filename)
+            
        elif "environ" == command[0]:
            # redirect(sign, filename)
            redirect_environ(command[-1], filename)
+         
        elif "echo" == command[0]:
            # redirect(command, sign, filename)
            redirect_echo(" ".join(command[1:-1]),command[-1],filename)
+         
        elif "help" == command[0]:
            # redirect(sign, filename)
            redirect_help(command[-1], filename)
@@ -122,6 +128,7 @@ def cd(args):
            currentDir = os.getcwd()
        else:
            os.chdir(args)
+           os.environ["PWD"] = os.getcwd()
    except Exception as e:
        print("The directory path *" + args + "* is invalid or does not exist.")
 
@@ -160,6 +167,8 @@ def redirect_dir(args, sign, filename):
 
 def environ():
    # lists the environ strings.
+   # "shell" has /myshell appended to it.
+   # PWD is updated with cd.
    environ = os.environ
    content = "-----------------"
    for k, v in environ.items():
@@ -193,6 +202,8 @@ def echo(args):
 
 def redirect_echo(args, sign, filename):
    # prints the argument given to the output file.
+   # A warning is not printed out to the file.
+   # instead, a blank space is printed.
    content = args.rstrip()
    if ">" == sign:
        with open(filename, 'w+') as f:
@@ -203,6 +214,7 @@ def redirect_echo(args, sign, filename):
 
 def help():
    # help file that has the capability of the more filter.
+   # ? can be inputted for help too.
    # Use the space-bar to move forward.
    os.system("more README")
 
@@ -225,11 +237,13 @@ def pause():
    print("-----------------")
 
 def quit():
-   # if "q" or "quit" is the input, exit.
+   # input can be "q" or "quit",
+   # A thank you message is printed, and the shell exits.
    content = "-----------------\nThanks for using MyShell. Come back soon!\n-----------------"
    print(content)
    raise SystemExit
 
 if __name__ == "__main__":
+   # batchfile would represent sys.argv
    main(sys.argv)
 
