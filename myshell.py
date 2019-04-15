@@ -9,11 +9,11 @@ def main(args):
    # The main function works on the input. 
    # The function determines if a batchfile is in the command line or not.
    # If not, the function prepares to take in input.
-   # /myshell is appended to the "shell" environment.
+   # /myshell is appended to the "shell" environment and is conviently in bold.
    # The screen is cleared and a welcome message is displayed.
    if len(args) > 1:
        myshell(args[1])
-   os.environ["SHELL"] = str(os.getcwd()) + "/myshell"
+   os.environ["SHELL"] = "\033[1m" + str(os.getcwd()) + "/myshell\033[0m"
    clr()
    print('Welcome. Type help (or ?) for more information. Enter a command to begin.\n')
    while True:
@@ -24,12 +24,13 @@ def main(args):
 def myshell(fileIn):
    # this function is called if there is a batchfile.
    # for example, python3 myshell.py gg
-   # gg will be opened, and each line will be executed.
+   # gg is opened. each line is numbered and in bold.
+   # each line will be executed.
    try:
        with open(fileIn, "r") as file:
            i = 1
            for line in file:
-               print("Line {} contains: ".format(i) + line)
+               print("\n\033[1mLine {} contains: \033[0m".format(i) + line)
                execute(line.split())
                i += 1
    except:
@@ -92,7 +93,7 @@ def childprocess(args):
          wpid = os.waitpid(pid, 0)
        else:
          subprocess.call([args[0],args[1]])
-       except:
+   except:
          print("Process creation error\nExample: python3 test.py")
 
 def redirect(command, filename):
@@ -221,14 +222,14 @@ def help():
 def redirect_help(sign, filename):
    # prints the whole content of the help file to the output file.
    f = open("README", "r")
-   if f.mode == "r":
-       content = f.read()
+   content = f.read()
    if ">" == sign:
        with open(filename, 'w+') as f:
            f.write(content)
    else:
        with open(filename, 'a+') as f:
            f.write("\n" + content)
+   f.close()
 
 def pause():
    # pauses the program until Enter is pressed.
@@ -246,4 +247,3 @@ def quit():
 if __name__ == "__main__":
    # batchfile would represent sys.argv
    main(sys.argv)
-
