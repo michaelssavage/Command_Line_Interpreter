@@ -13,8 +13,9 @@
 
     • Processing the internal commands (1-8 inclusive),
     • Taking command line input from a batchfile* (9), 
-    • Supporting i/o-redirection* on output (10), and
-    • Executing programs in the background. (11)
+    • Supporting i/o-redirection* on output (10),
+    • Executing programs in the background (11), and
+    • Executing child processes* (12)
 
     All other command line input is interpreted as
     program invocation*. The 'subprocess' module creates
@@ -60,6 +61,8 @@
 10. [command] arg1 arg2 (> OR >>) outputfile
 
 11. [command] arg1 arg2 &
+
+12. python3 test.py
 
 
 ||DESCRIPTION||
@@ -285,23 +288,68 @@
 -             dir &           -
 -------------------------------
 
+        ==================
+12.     Program Invocation
+        ==================
+
+• Any input that does not correspond to the previous 11
+  commands will be interpreted as an executable child process.
+• subprocess.call() is used even though subprocess.run() is
+  the newer, safer version because of limitations.
+
+---------------------------------------------------------
+- for the following example, I have made a python file  -
+- called test.py which includes the code:               -
+-                                                       -
+-             i = 0                                     -
+-             while i < 4:                              -
+-                 print("hello person {}".format(i))    -
+-                 i += 1                                -
+---------------------------------------------------------
+- Examples:                                             -
+-             python3 test.py                           -
+-                                                       -
+-             hello person 0                            -
+-             hello person 1                            -
+-             hello person 2                            -
+-             hello person 3                            -
+---------------------------------------------------------
+
+
+---------------------------------------------------------
+-       Bringing All The Shell Commands Together        -
+---------------------------------------------------------
+- 
+-
+-
+-
+-
+-
+-
+-
+-
+-
+---------------------------------------------------------
 
 ||DEFINITIONS||
 
 1. batchfile
-    • a computer file containing a list of instructions 
-      to be carried out in turn.
+    • a computer file containing a list of instructions to be 
+      carried out in turn.
 
 2. child process
     • created by a parent process. It is a subprocess that
-    is a clone of the process that made it.
+    is a clone of the process that made it. It terminates when
+    it has ended.
 
 3. directory
     • a logical section of a file system used to hold 
       files. Directorie may also contain other directories.
 
 4. invocation
-    • means the execution of a program or function.
+    • means the execution of a program or function. Child
+      process is executed by using the subprocess module.
+      Subprocess.call works in python3 or newer.
 
 5. redirection
     • pointing data to a new output source. Myshell uses the
@@ -310,4 +358,5 @@
     • echo 'hello' > gg displays 'hello' in the file gg.
 
 6. truncate
-    • replace or overwrite data that is present in a file.
+    • replace or overwrite data that is present in a file. This
+      is possible with '>'
