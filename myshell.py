@@ -89,7 +89,7 @@ def execute(args):
 def childprocess(args):
    # child process takes the form; python3 example.py
    try:
-       subprocess.run([args[0],args[1]])
+       subprocess.call([args[0],args[1]])
    except:
        print("Subprocess was not able to call [" + "] [".join(args) + "]")
 
@@ -230,6 +230,7 @@ def redirect_help(sign, filename):
 
 def pause():
    # pauses the program until Enter is pressed.
+   # anything on the keyboard can be pressed and will have no effect.
    print("-----------------")
    input("Shell paused.. Press 'Enter' to continue")
    print("-----------------")
