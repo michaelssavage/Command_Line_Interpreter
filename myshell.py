@@ -55,7 +55,8 @@ def execute(args):
            redirect(args[:-1], args[-1])
        # &
        elif "&" == args[-1]:
-           subprocess.Popen(args[:-1])
+           p = subprocess.Popen(args[:-1])
+           p.wait()
        # cd
        elif "cd" == args[0]:
            cd("".join(args[1:]))
@@ -88,13 +89,9 @@ def execute(args):
 def childprocess(args):
    # child process takes the form; python3 example.py
    try:
-       pid = os.fork()
-       if pis > 0:
-         wpid = os.waitpid(pid, 0)
-       else:
-         subprocess.call([args[0],args[1]])
+       subprocess.run([args[0],args[1]])
    except:
-         print("Process creation error\nExample: python3 test.py")
+       print("Subprocess was not able to call [" + "] [".join(args) + "]")
 
 def redirect(command, filename):
    # main overwrite that will deal with dir, environ, echo & help
