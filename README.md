@@ -9,7 +9,11 @@
      
 ||SYNOPSIS||
 
-    The shell has many uses. It is capable of;
+    The shell has many uses. It is started by entering
+
+                    python3 myshell.py
+
+    It is capable of
 
     • Processing the internal commands (1-8 inclusive),
     • Taking command line input from a batchfile* (9), 
@@ -19,7 +23,7 @@
 
     All other command line input is interpreted as
     program invocation*. The 'subprocess' module creates
-    and execs a child process with the call() method.
+    and execs a child process* with the call() method.
     This is only possible in python3 +.
 
     To find out more about each command, press the space
@@ -207,8 +211,10 @@
 9.          python3 myshell.py [batchfile]*
             ===============================
                             
-• the shell must be quit before trying to take command
-  line input from [batchfile]*.
+• as said in the synopsis, starting the shell is done by
+  python3 myshell.py
+• the shell can take an additional argument at launch
+  that will be a batchfile*.
 • the [batchfile]* is assumed to contain a set of command 
   lines that the shell can process.
 • the line number and arguments are printed in bold, 
@@ -279,8 +285,8 @@
 
 • the ampersand (&) at the end of the line indicates that 
   background execution will take place.
-• if the user's version of Python is not up to date, this
-  will give an error as 'subprocess.Popen()' is used.
+• subprocess.Popen() is used. New commands can be entered
+  while the child process* executes.
 
 -------------------------------
 - Examples:                   -
@@ -289,13 +295,13 @@
 -------------------------------
 
         ==================
-12.     Program Invocation
+12.     Program Invocation*
         ==================
 
-• Any input that does not correspond to the previous 11
-  commands will be interpreted as an executable child process.
+• Any input that does not correspond to the previous (11)
+  commands will be interpreted as an executable child process*.
 • subprocess.call() is used even though subprocess.run() is
-  the newer, safer version because of limitations.
+  the newer, safer version. This is because of limitations.
 
 ---------------------------------------------------------
 - for the following example, I have made a python file  -
@@ -319,16 +325,22 @@
 ---------------------------------------------------------
 -       Bringing All The Shell Commands Together        -
 ---------------------------------------------------------
-- 
--
--
--
--
--
--
--
--
--
+-          python3 myshell.py                           -
+-          echo import time > x.py                      -
+-          echo time.sleep(10) >> x.py                  -
+-          python3 x.py &                               - 
+-          echo hello                                   -
+-          dir                                          -
+-          echo environ > x.py                          -
+-          echo pause >> x.py                           -
+-          q                                            -
+-          python3 myshell.py x.py                      -
+-          python3 myshell.py                           -
+-          help > x.py                                  -
+-          cd ..                                        -
+-          dir                                          -
+-          clr                                          -
+-          quit                                         -
 ---------------------------------------------------------
 
 ||DEFINITIONS||
@@ -344,12 +356,12 @@
 
 3. directory
     • a logical section of a file system used to hold 
-      files. Directorie may also contain other directories.
+      files. Directories may also contain other directories.
 
 4. invocation
     • means the execution of a program or function. Child
       process is executed by using the subprocess module.
-      Subprocess.call works in python3 or newer.
+      Subprocess.call() works in python3 or newer.
 
 5. redirection
     • pointing data to a new output source. Myshell uses the
@@ -359,4 +371,6 @@
 
 6. truncate
     • replace or overwrite data that is present in a file. This
-      is possible with '>'
+      is possible with '>'. If gg had echo hello on the first
+      line and we entered pause > gg, then echo hello is 
+      deleted and pause replaces it.
