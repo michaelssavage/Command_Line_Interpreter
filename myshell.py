@@ -9,7 +9,7 @@ def main(args):
    # The main function works on the input. 
    # The function determines if a batchfile is in the command line or not.
    # If not, the function prepares to take in input.
-   # /myshell is appended to the "shell" environment and is conviently in bold.
+   # /myshell is appended to the "shell" environment and is conveniently in bold.
    # The screen is cleared and a welcome message is displayed.
    if len(args) > 1:
        myshell(args[1])
